@@ -73,7 +73,7 @@ class FilamentCompaniesServiceProvider extends PanelProvider
         return $panel
             ->default()
             ->id('company')
-            ->path('company')
+            ->path('/')
             ->login(Login::class)
             ->registration(Register::class)
             ->passwordReset()
@@ -94,10 +94,11 @@ class FilamentCompaniesServiceProvider extends PanelProvider
                     ->termsAndPrivacyPolicy()
                     ->notifications()
                     ->modals()
-                    ->socialite(
-                        providers: [Provider::Github],
-                        features: [Feature::RememberSession, Feature::ProviderAvatars],
-                    ),
+                // ->socialite(
+                //     providers: [Provider::Github],
+                //     features: [Feature::RememberSession, Feature::ProviderAvatars],
+                // )
+                ,
             )
             ->plugin(
                 PanelShiftDropdown::make()
@@ -141,7 +142,7 @@ class FilamentCompaniesServiceProvider extends PanelProvider
                     ]);
             })
             ->viteTheme('resources/css/filament/company/theme.css')
-            ->brandLogo(static fn () => view('components.icons.logo'))
+            ->brandLogo(static fn() => view('components.icons.logo'))
             ->tenant(Company::class)
             ->tenantProfile(ManageCompany::class)
             ->tenantRegistration(CreateCompany::class)
@@ -155,7 +156,7 @@ class FilamentCompaniesServiceProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Company/Widgets'), for: 'App\\Filament\\Company\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -233,10 +234,10 @@ class FilamentCompaniesServiceProvider extends PanelProvider
     {
         $this->configureSelect();
 
-        Actions\CreateAction::configureUsing(static fn (Actions\CreateAction $action) => FilamentComponentConfigurator::configureActionModals($action));
-        Actions\EditAction::configureUsing(static fn (Actions\EditAction $action) => FilamentComponentConfigurator::configureActionModals($action));
-        Tables\Actions\EditAction::configureUsing(static fn (Tables\Actions\EditAction $action) => FilamentComponentConfigurator::configureActionModals($action));
-        Tables\Actions\CreateAction::configureUsing(static fn (Tables\Actions\CreateAction $action) => FilamentComponentConfigurator::configureActionModals($action));
+        Actions\CreateAction::configureUsing(static fn(Actions\CreateAction $action) => FilamentComponentConfigurator::configureActionModals($action));
+        Actions\EditAction::configureUsing(static fn(Actions\EditAction $action) => FilamentComponentConfigurator::configureActionModals($action));
+        Tables\Actions\EditAction::configureUsing(static fn(Tables\Actions\EditAction $action) => FilamentComponentConfigurator::configureActionModals($action));
+        Tables\Actions\CreateAction::configureUsing(static fn(Tables\Actions\CreateAction $action) => FilamentComponentConfigurator::configureActionModals($action));
         Forms\Components\DateTimePicker::configureUsing(static function (Forms\Components\DateTimePicker $component) {
             $component->native(false);
         });
@@ -248,7 +249,7 @@ class FilamentCompaniesServiceProvider extends PanelProvider
     protected function configureSelect(): void
     {
         Select::configureUsing(function (Select $select): void {
-            $isSelectable = fn (): bool => ! $this->hasRequiredRule($select);
+            $isSelectable = fn(): bool => ! $this->hasRequiredRule($select);
 
             $select
                 ->native(false)
